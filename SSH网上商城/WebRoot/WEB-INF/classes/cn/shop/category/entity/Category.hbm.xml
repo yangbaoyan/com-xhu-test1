@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+     <class name="cn.shop.category.entity.Category" table="category" catalog="shop">
+           <id name="cid" type="integer">
+                <column name="cid" />
+                <generator class="native" />
+           </id>
+           <property name="cname" type="string">
+                  <column name="cname"></column>
+           </property>
+           <!-- 二级分类 -->
+           <set name="categorySeconds" order-by="csid" lazy="false">
+                 <key column="cid"></key>
+                <one-to-many class="cn.shop.categorysecond.entity.CategorySecond"/>
+           </set>
+     </class>
+</hibernate-mapping>

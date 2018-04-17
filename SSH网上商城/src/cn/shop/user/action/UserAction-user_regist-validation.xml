@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE validators PUBLIC
+  		"-//Apache Struts//XWork Validator 1.0.3//EN"
+  		"http://struts.apache.org/dtds/xwork-validator-1.0.3.dtd">
+  <validators>
+        
+         <field name="email">
+               <field-validator type="regex">
+                    <param name="regexExpression"><![CDATA[(\w{5,17}$)]]></param>
+                    <message>邮箱必须是5至17位数字和字符组成！</message>
+               </field-validator>
+         </field>
+          <field name="name">
+               <field-validator type="requiredstring">
+                     <message>姓名不能为空！</message>
+               </field-validator>
+         </field>
+          <field name="phone">
+               <field-validator type="regex">
+                   <param name="regexExpression"><![CDATA[(\d{11})]]></param>
+                    <message>电话必须是以1开头的11数号码！</message>
+               </field-validator>
+         </field>
+  </validators>
+  		
+  		
+  		

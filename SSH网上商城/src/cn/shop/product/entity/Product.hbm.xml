@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+     <class name="cn.shop.product.entity.Product" table="product" catalog="shop">
+           <id name="pid" type="integer">
+               <column name="pid" />
+               <generator class="native" />
+           </id>
+           <property name="panme" type="string">
+               <column name="pname" />
+           </property>
+           <property name="market_price" type="double">
+               <column name="market_price" />
+           </property>
+           <property name="shop_price" type="double">
+               <column name="shop_price" />
+           </property>
+           <property name="image" type="string">
+                <column name="image" />
+           </property>
+           <property name="pdesc" type="string">
+                 <column name="pdesc" />
+           </property>
+           <property name="is_hot" type="integer">
+                 <column name="is_hot" />
+           </property>
+           <property name="pdate" type="date">
+                 <column name="pdate" />
+           </property>
+           <many-to-one name="categorySecond" lazy="false" class="cn.shop.categorysecond.entity.CategorySecond" column="csid">
+           </many-to-one>
+     </class>   
+</hibernate-mapping>

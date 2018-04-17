@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+	<constant name="struts.enable.DynamicMethodInvocation" value="true" />
+	<constant name="struts.devMode" value="true" />
+	<constant name="struts.i18n.encoding" value="utf-8" />	
+	<constant name="struts.multipart.maxSize" value="5000000"/>
+	
+	
+	<package name="shop" namespace="/" extends="struts-default">
+    <!-- 配置首页index的action -->
+        <action name="index" class="indexAction" method="execute">
+              <result name="index">/WEB-INF/jsp/index.jsp</result>
+        </action>
+        
+        <action name="user_*" class="userAction" method="{1}">
+              <result name="registpage">/WEB-INF/jsp/user_registPage.jsp</result>
+              <!--input是当检验不过会返回到的逻辑视图，会打印错误信息-->
+              <result name="input">/WEB-INF/jsp/user_registPage.jsp</result>
+              <result type="redirectAction">index</result>
+              <result name="login">/WEB-INF/jsp/login.jsp</result>
+              <result name="quit" type="redirectAction">index</result>
+              <result name="checkimgerror">/WEB-INF/jsp/user_registPage.jsp</result>
+        </action>
+         
+        <action name="checkimg" class="checkimgAction">
+            
+        </action>
+        
+        <!-- product的action -->
+        <action name="product_*" class="productAction" method="{1}">
+               <result name="findByProduct">/WEB-INF/jsp/product.jsp</result>
+               <result name="findByCid">/WEB-INF/jsp/productlist.jsp</result>
+        </action>
+	</package>
+</struts>

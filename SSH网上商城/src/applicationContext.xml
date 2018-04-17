@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx" 
+	xsi:schemaLocation="
+	 http://www.springframework.org/schema/beans
+	 http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	 http://www.springframework.org/schema/aop 
+	http://www.springframework.org/schema/aop/spring-aop-3.0.xsd 
+	http://www.springframework.org/schema/context 
+	http://www.springframework.org/schema/context/spring-context-3.0.xsd 
+	http://www.springframework.org/schema/tx 
+	http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+     <!-- 配置数据源 -->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="url" value="jdbc:mysql://127.0.0.1:3306/shop?useUnicode=true&amp;characterEncoding=utf8"></property>
+		<property name="username" value="root"></property>
+		<property name="password" value="root"></property>
+		<property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
+	</bean>
+	<!-- 访问数据库的会话工厂 -->
+		<bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">	
+		      <property name="dataSource" ref="dataSource"></property>
+		<!-- hibernate的方言 -->
+		<property name="hibernateProperties">
+		   <props>
+		       <prop key="hibernate_dialect">org.hibernate.dialect.MySQLDialect</prop>
+		       <prop key="show_sql">true</prop>
+		       <prop key="format_sql">true</prop>
+		       <prop key="javax.persistence.validation.mode">none</prop>
+		   </props>
+		</property> 
+		<!-- hibernate配置文件 -->   
+		<property name="mappingResources">
+		    <list>
+		        <value>cn/shop/user/entity/User.hbm.xml</value>
+		        <value>cn/shop/category/entity/Category.hbm.xml</value>
+		        <value>cn/shop/product/entity/Product.hbm.xml</value>
+		        <value>cn/shop/categorysecond/entity/CategorySecond.hbm.xml</value>    
+		    </list>
+		</property>
+	    </bean>
+    <!-- dao层 ===============================-->
+      <bean id="userDao" class="cn.shop.user.dao.UserDao">
+           <property name="sessionFactory" ref="sessionFactory"></property>
+      </bean>
+      <bean id="categoryDao" class="cn.shop.category.dao.CategoryDao">
+           <property name="sessionFactory" ref="sessionFactory"></property>
+      </bean>
+      <bean id="productDao" class="cn.shop.product.dao.ProductDao">
+           <property name="sessionFactory" ref="sessionFactory"></property>
+      </bean>
+    <!-- service层=========================== -->
+      <bean id="userService" class="cn.shop.user.service.UserService">
+           <property name="userDao" ref="userDao"></property>
+      </bean>
+      <bean id="categoryService" class="cn.shop.category.service.CategoryService">
+          <property name="categoryDao" ref="categoryDao"></property>
+      </bean>
+      <bean id="productService" class="cn.shop.product.service.ProductService">
+          <property name="productDao" ref="productDao"></property>
+      </bean>
+    
+   <!--  action层 ==========================-->
+      <!-- 首页index的action -->
+      <bean id="indexAction" class="cn.shop.index.action.IndexAction" scope="prototype">
+           <property name="categoryService" ref="categoryService"></property>
+           <property name="productService" ref="productService"></property>
+      </bean>
+      <!--  user ==========================-->
+      <bean id="userAction" class="cn.shop.user.action.UserAction" scope="prototype">
+           <property name="userService" ref="userService"></property>
+      </bean>
+      <!-- 生成验证码需要的action -->
+      <bean id="checkimgAction" class="cn.shop.user.action.CheckImge" scope="prototype">
+      </bean>
+      
+      <!-- product -->
+        <bean id="productAction" class="cn.shop.product.action.ProductAciton" scope="prototype">
+              <property name="productService" ref="productService"></property>
+        </bean>
+      
+      
+	<!-- 使用事务声明 =================================================== -->
+	<!-- 事务管理器 -->
+		<bean id="txManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		       <property name="sessionFactory" ref="sessionFactory"></property>     
+		</bean>
+		<!-- 开启注解事务 -->
+		<tx:annotation-driven transaction-manager="txManager"/>		
+	    </beans> 
